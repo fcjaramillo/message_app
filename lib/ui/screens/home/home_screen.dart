@@ -83,15 +83,38 @@ class _HomeBodyState extends State<_HomeBody> {
   Widget build(BuildContext context) {
 
     final viewModel = context.watch<HomeViewModel>();
+    final textTheme = Theme
+        .of(context)
+        .textTheme;
 
-    return ListView.builder(
+    return ListView.separated(
       itemCount: viewModel.status.posts.length,
       itemBuilder: (context, index) {
-        return ListTile(
-          title: Text(
-            viewModel.status.posts[index].title,
-            maxLines: 2,
-          ),
+        return Row(
+          children: [
+            Expanded(
+              child: Icon(
+                Icons.circle,
+                color: kColorBlue,
+                size: 14,
+              ),
+              flex: 1,
+            ),
+            Expanded(
+              child: Text(
+                viewModel.status.posts[index].title,
+                maxLines: 2,
+                style: textTheme.subtitleBlack,
+              ),
+              flex: 9,
+            )
+          ],
+        );
+      },
+      separatorBuilder: (context, index) {
+        return SizedBox(
+          height: 30,
+          child: Divider()
         );
       },
     );
