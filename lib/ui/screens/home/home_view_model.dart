@@ -1,5 +1,7 @@
 import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:messages_app/core/api/model/comment_model.dart';
 import 'package:messages_app/core/api/model/post_model.dart';
+import 'package:messages_app/core/api/model/user_model.dart';
 import 'package:messages_app/core/api/repository/interactor/api_interactor.dart';
 import 'package:messages_app/core/configure/get_it_locator.dart';
 import 'package:messages_app/core/configure/message_route.dart';
@@ -42,7 +44,6 @@ class HomeViewModel extends ViewModel<HomeStatus> {
           ..isRead = isRead,
         );
       }
-      print(response[0]);
       status = status.copyWith(posts:  response, isLoading: false);
     } else {
       List<PostDb> postsDb= await _database.getPosts();
@@ -61,14 +62,21 @@ class HomeViewModel extends ViewModel<HomeStatus> {
   }
 
   void onTapPost(PostModel post, int index) async {
-    await _database.changePostRead(post.id);
-    post = post.rebuild((p) => p
-      ..isRead = true,
-    );
-    List<PostModel> posts = status.posts;
-    posts[index] = post;
-    status = status.copyWith(
-      posts: posts,
-    );
+    final connectivity = await (Connectivity().checkConnectivity());
+    if (connectivity == ConnectivityResult.mobile || connectivity == ConnectivityResult.wifi) {
+      List<CommentModel> comments = await locator<ApiInteractor>().getAllCommentsByPost(post.id);
+      UserModel user = await locator<ApiInteractor>().getUser(post.id);
+      await _database.changePostRead(post.id);
+      post = post.rebuild((p) => p
+        ..isRead = true,
+      );
+      List<PostModel> posts = status.posts;
+      posts[index] = post;
+      status = status.copyWith(
+        posts: posts,
+      );
+      _route.goDetail(comments: comments, post: post, user: user);
+    }
+
   }
 }

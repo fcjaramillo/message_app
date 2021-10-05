@@ -22,4 +22,18 @@ class _$PostApiService extends PostApiService {
     final $request = Request('GET', $url, client.baseUrl);
     return client.send<BuiltList<PostModel>, PostModel>($request);
   }
+
+  @override
+  Future<Response<BuiltList<CommentModel>>> getComments(int id) {
+    final $url = '/comments?postId=$id';
+    final $request = Request('GET', $url, client.baseUrl);
+    return client.send<BuiltList<CommentModel>, CommentModel>($request);
+  }
+
+  @override
+  Future<Response<UserModel>> getUser(int id) {
+    final $url = '/users/$id';
+    final $request = Request('GET', $url, client.baseUrl);
+    return client.send<UserModel, UserModel>($request);
+  }
 }
