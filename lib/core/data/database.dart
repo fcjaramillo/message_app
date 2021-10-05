@@ -40,4 +40,41 @@ class Database {
       box.deleteAt(i);
     }
   }
+
+  //Read
+  Future changePostRead(int id) async {
+    var box = await Hive.openBox('read');
+    await box.add(id);
+  }
+
+  Future<bool> getPostRead(int id) async {
+    var box = await Hive.openBox('read');
+    int postId = 0;
+    bool result = false;
+    for (int i = 0; i < box.length; i++) {
+      postId = box.getAt(i);
+      if(postId == id){
+        result = true;
+      }
+    }
+    return result;
+  }
+
+  //favorite
+  Future changePostFavorite(int id) async {
+    var box = await Hive.openBox('read');
+    await box.add(id);
+  }
+
+  Future<bool> getPostFavorite(int id) async {
+    var box = await Hive.openBox('read');
+    int postId = 0;
+    bool result = false;
+    for (int i = 0; i < box.length; i++) {
+      postId = box.getAt(i);
+      if(postId == id)
+        result = true;
+    }
+    return result;
+  }
 }

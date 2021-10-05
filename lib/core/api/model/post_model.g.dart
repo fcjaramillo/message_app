@@ -28,7 +28,21 @@ class _$PostModelSerializer implements StructuredSerializer<PostModel> {
       'body',
       serializers.serialize(object.body, specifiedType: const FullType(String)),
     ];
-
+    Object? value;
+    value = object.isRead;
+    if (value != null) {
+      result
+        ..add('isRead')
+        ..add(
+            serializers.serialize(value, specifiedType: const FullType(bool)));
+    }
+    value = object.isFavorite;
+    if (value != null) {
+      result
+        ..add('isFavorite')
+        ..add(
+            serializers.serialize(value, specifiedType: const FullType(bool)));
+    }
     return result;
   }
 
@@ -59,6 +73,14 @@ class _$PostModelSerializer implements StructuredSerializer<PostModel> {
           result.body = serializers.deserialize(value,
               specifiedType: const FullType(String)) as String;
           break;
+        case 'isRead':
+          result.isRead = serializers.deserialize(value,
+              specifiedType: const FullType(bool)) as bool?;
+          break;
+        case 'isFavorite':
+          result.isFavorite = serializers.deserialize(value,
+              specifiedType: const FullType(bool)) as bool?;
+          break;
       }
     }
 
@@ -75,6 +97,10 @@ class _$PostModel extends PostModel {
   final String title;
   @override
   final String body;
+  @override
+  final bool? isRead;
+  @override
+  final bool? isFavorite;
 
   factory _$PostModel([void Function(PostModelBuilder)? updates]) =>
       (new PostModelBuilder()..update(updates)).build();
@@ -83,7 +109,9 @@ class _$PostModel extends PostModel {
       {required this.userId,
       required this.id,
       required this.title,
-      required this.body})
+      required this.body,
+      this.isRead,
+      this.isFavorite})
       : super._() {
     BuiltValueNullFieldError.checkNotNull(userId, 'PostModel', 'userId');
     BuiltValueNullFieldError.checkNotNull(id, 'PostModel', 'id');
@@ -105,14 +133,19 @@ class _$PostModel extends PostModel {
         userId == other.userId &&
         id == other.id &&
         title == other.title &&
-        body == other.body;
+        body == other.body &&
+        isRead == other.isRead &&
+        isFavorite == other.isFavorite;
   }
 
   @override
   int get hashCode {
     return $jf($jc(
-        $jc($jc($jc(0, userId.hashCode), id.hashCode), title.hashCode),
-        body.hashCode));
+        $jc(
+            $jc($jc($jc($jc(0, userId.hashCode), id.hashCode), title.hashCode),
+                body.hashCode),
+            isRead.hashCode),
+        isFavorite.hashCode));
   }
 
   @override
@@ -121,7 +154,9 @@ class _$PostModel extends PostModel {
           ..add('userId', userId)
           ..add('id', id)
           ..add('title', title)
-          ..add('body', body))
+          ..add('body', body)
+          ..add('isRead', isRead)
+          ..add('isFavorite', isFavorite))
         .toString();
   }
 }
@@ -145,6 +180,14 @@ class PostModelBuilder implements Builder<PostModel, PostModelBuilder> {
   String? get body => _$this._body;
   set body(String? body) => _$this._body = body;
 
+  bool? _isRead;
+  bool? get isRead => _$this._isRead;
+  set isRead(bool? isRead) => _$this._isRead = isRead;
+
+  bool? _isFavorite;
+  bool? get isFavorite => _$this._isFavorite;
+  set isFavorite(bool? isFavorite) => _$this._isFavorite = isFavorite;
+
   PostModelBuilder();
 
   PostModelBuilder get _$this {
@@ -154,6 +197,8 @@ class PostModelBuilder implements Builder<PostModel, PostModelBuilder> {
       _id = $v.id;
       _title = $v.title;
       _body = $v.body;
+      _isRead = $v.isRead;
+      _isFavorite = $v.isFavorite;
       _$v = null;
     }
     return this;
@@ -180,7 +225,9 @@ class PostModelBuilder implements Builder<PostModel, PostModelBuilder> {
             title: BuiltValueNullFieldError.checkNotNull(
                 title, 'PostModel', 'title'),
             body: BuiltValueNullFieldError.checkNotNull(
-                body, 'PostModel', 'body'));
+                body, 'PostModel', 'body'),
+            isRead: isRead,
+            isFavorite: isFavorite);
     replace(_$result);
     return _$result;
   }

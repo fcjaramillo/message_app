@@ -90,25 +90,49 @@ class _HomeBodyState extends State<_HomeBody> {
     return ListView.separated(
       itemCount: viewModel.status.posts.length,
       itemBuilder: (context, index) {
-        return Row(
-          children: [
-            Expanded(
-              child: Icon(
-                Icons.circle,
-                color: kColorBlue,
-                size: 14,
-              ),
-              flex: 1,
+        return GestureDetector(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(
+              horizontal: 8.0,
             ),
-            Expanded(
-              child: Text(
-                viewModel.status.posts[index].title,
-                maxLines: 2,
-                style: textTheme.subtitleBlack,
-              ),
-              flex: 9,
-            )
-          ],
+            child: Row(
+              children: [
+                Visibility(
+                  child: Expanded(
+                    child: Icon(
+                      Icons.circle,
+                      color: kColorBlue,
+                      size: 14,
+                    ),
+                    flex: 1,
+                  ),
+                  visible: !(viewModel.status.posts[index].isRead ?? false),
+                ),
+                Expanded(
+                  child: Text(
+                    viewModel.status.posts[index].title,
+                    maxLines: 2,
+                    style: textTheme.subtitleBlack,
+                  ),
+                  flex: 9,
+                ),
+                Visibility(
+                  child: Expanded(
+                    child: Icon(
+                      Icons.star,
+                      color: kColorYellow,
+                      size: 24,
+                    ),
+                    flex: 1,
+                  ),
+                  visible: viewModel.status.posts[index].isFavorite ?? false,
+                ),
+              ],
+            ),
+          ),
+          onTap: (){
+            viewModel.onTapPost(viewModel.status.posts[index], index);
+          },
         );
       },
       separatorBuilder: (context, index) {

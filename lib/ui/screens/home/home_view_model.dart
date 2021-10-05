@@ -26,7 +26,7 @@ class HomeViewModel extends ViewModel<HomeStatus> {
     if (connectivity == ConnectivityResult.mobile || connectivity == ConnectivityResult.wifi) {
       List<PostModel> response = await locator<ApiInteractor>().getAllPosts();
       response.removeRange(20, response.length);
-      response.asMap().forEach((i, post) {
+      response.asMap().forEach((i, post) async {
         _database.setPost(PostDb(
           userId: post.userId,
           id: post.id,
@@ -34,6 +34,15 @@ class HomeViewModel extends ViewModel<HomeStatus> {
           body: post.body,
         ), i);
       });
+      for(int i=0; i < response.length; i++){
+        PostModel post = response[i];
+        bool isRead = await _database.getPostRead(post.id);
+        bool isFavorite = await _database.getPostFavorite(post.id);
+        response[i] = post.rebuild((p) => p
+          ..isRead = isRead,
+        );
+      }
+      print(response[0]);
       status = status.copyWith(posts:  response, isLoading: false);
     } else {
       List<PostDb> postsDb= await _database.getPosts();
@@ -49,5 +58,17 @@ class HomeViewModel extends ViewModel<HomeStatus> {
       status = status.copyWith(posts: posts, isLoading: false);
       UnimplementedError();
     }
+  }
+
+  void onTapPost(PostModel post, int index) async {
+    await _database.changePostRead(post.id);
+    post = post.rebuild((p) => p
+      ..isRead = true,
+    );
+    List<PostModel> posts = status.posts;
+    posts[index] = post;
+    status = status.copyWith(
+      posts: posts,
+    );
   }
 }

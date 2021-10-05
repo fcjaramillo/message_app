@@ -12,6 +12,10 @@ abstract class PostModel implements Built<PostModel, PostModelBuilder> {
 
   String get body;
 
+  bool? get isRead;
+
+  bool? get isFavorite;
+
   PostModel._();
   factory PostModel([void Function(PostModelBuilder) updates]) = _$PostModel;
 

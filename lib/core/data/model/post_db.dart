@@ -14,6 +14,5 @@ class PostDb {
   @HiveField(3)
   String? body;
 
-
-  PostDb({ this.userId, this.id, this.title, this.body});
+  PostDb({ this.userId, this.id, this.title, this.body, });
 }
