@@ -100,4 +100,11 @@ class HomeViewModel extends ViewModel<HomeStatus> {
     _database.deletePost(post.id);
   }
 
+
+  void onTapDeleteAll() {
+    _database.deleteAllPost();
+    status = status.copyWith(
+      posts: [],
+    );
+  }
 }

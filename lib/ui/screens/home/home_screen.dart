@@ -57,6 +57,13 @@ class HomeWidget extends StatelessWidget {
         elevation: 0,
       ),
       body: _HomeBody(),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(
+          Icons.delete
+        ),
+        backgroundColor: kColorRed,
+        onPressed: viewModel.onTapDeleteAll,
+      ),
     );
   }
 }
