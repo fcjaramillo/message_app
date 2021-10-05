@@ -5,12 +5,12 @@ import 'package:messages_app/core/configure/get_it_locator.dart';
 import 'package:messages_app/core/configure/message_route.dart';
 import 'package:messages_app/ui/screens/splash/splash_view_model.dart';
 
-class SplashPage extends StatefulWidget {
+class SplashScreen extends StatefulWidget {
   @override
-  _SplashPageState createState() => _SplashPageState();
+  _SplashScreenState createState() => _SplashScreenState();
 }
 
-class _SplashPageState extends State<SplashPage> {
+class _SplashScreenState extends State<SplashScreen> {
 
   @override
   void initState() {
@@ -50,7 +50,7 @@ class _SplashPageState extends State<SplashPage> {
                 ),
                 Text(
                   'Cargando...',
-                  style: Theme.of(context).textTheme.textButtomWhite,
+                  style: textTheme.textButtomWhite,
                 ),
               ],
             ),

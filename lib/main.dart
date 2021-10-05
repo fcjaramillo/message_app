@@ -7,7 +7,7 @@ import 'package:messages_app/core/data/database.dart';
 void main() async {
   setUpLocator();
   await locator.allReady();
-  await locator<MessageRoute>();
+  locator<MessageRoute>();
 
   WidgetsFlutterBinding.ensureInitialized();
 

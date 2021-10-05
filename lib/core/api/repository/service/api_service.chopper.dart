@@ -15,4 +15,11 @@ class _$PostApiService extends PostApiService {
 
   @override
   final definitionType = PostApiService;
+
+  @override
+  Future<Response<BuiltList<PostModel>>> getAllPosts() {
+    final $url = '/posts';
+    final $request = Request('GET', $url, client.baseUrl);
+    return client.send<BuiltList<PostModel>, PostModel>($request);
+  }
 }

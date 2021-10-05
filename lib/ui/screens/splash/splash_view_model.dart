@@ -9,8 +9,7 @@ class SplashViewModel {
   void onInit() async {
     Future.delayed(
       Duration(milliseconds: 2000),  () async {
-        //return _route.goHome();
-        print('init App');
+        return _route.goHome();
       },
     );
   }
