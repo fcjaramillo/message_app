@@ -18,6 +18,7 @@ class HomeViewModel extends ViewModel<HomeStatus> {
   HomeViewModel(this._route, this._database){
     status = HomeStatus(
       isLoading: true,
+      indexTab: 0,
       titleBar: 'Posts',
       posts: <PostModel>[],
     );
@@ -77,6 +78,17 @@ class HomeViewModel extends ViewModel<HomeStatus> {
       );
       _route.goDetail(comments: comments, post: post, user: user);
     }
-
   }
+
+  void onTapTab(int index) {
+    switch(index){
+      case 0:
+        status = status.copyWith(indexTab: index);
+        break;
+      case 1:
+        status = status.copyWith(indexTab: index);
+        break;
+    }
+  }
+
 }

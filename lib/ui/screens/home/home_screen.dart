@@ -53,7 +53,8 @@ class HomeWidget extends StatelessWidget {
               onPressed: viewModel.onInit,
             ),
           ),
-        ]
+        ],
+        elevation: 0,
       ),
       body: _HomeBody(),
     );
@@ -69,10 +70,16 @@ class _HomeBody extends StatefulWidget {
   State<_HomeBody> createState() => _HomeBodyState();
 }
 
-class _HomeBodyState extends State<_HomeBody> {
+class _HomeBodyState extends State<_HomeBody> with SingleTickerProviderStateMixin {
+
+  late TabController tabController;
 
   @override
   void initState() {
+    tabController = TabController(length: 2, vsync: this);
+    tabController.addListener(() {
+      context.read<HomeViewModel>().onTapTab(tabController.index);
+    });
     WidgetsBinding.instance!.addPostFrameCallback((_) {
       context.read<HomeViewModel>().onInit();
     });
@@ -87,8 +94,66 @@ class _HomeBodyState extends State<_HomeBody> {
         .of(context)
         .textTheme;
 
+    return DefaultTabController(
+      length: 2,
+      child: Column(
+        children: [
+          SizedBox(
+            height: 74.0,
+            child: AppBar(
+              elevation: 0,
+              backgroundColor: kColorGreen,
+              bottom: TabBar(
+                controller: tabController,
+                onTap: (index) {
+                  viewModel.onTapTab(index);
+                },
+                tabs: [
+                  Tab(
+                    child: Text(
+                      'ALL',
+                    ),
+                  ),
+                  Tab(
+                    child: Text(
+                      'FAVORITES',
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          Expanded(
+              child: TabBarView(
+                controller: tabController,
+                children: [
+                  _ListPosts(viewModel: viewModel, textTheme: textTheme),
+                  Container(
+                    color: kColorGray,
+                  ),
+                ],
+              )
+          )
+        ],
+      ),
+    );
+  }
+}
+
+class _ListPosts extends StatelessWidget {
+  const _ListPosts({
+    Key? key,
+    required this.viewModel,
+    required this.textTheme,
+  }) : super(key: key);
+
+  final HomeViewModel viewModel;
+  final TextTheme textTheme;
+
+  @override
+  Widget build(BuildContext context) {
     return ListView.separated(
-      itemCount: viewModel.status.posts.length,
+    itemCount: viewModel.status.posts.length,
       itemBuilder: (context, index) {
         return GestureDetector(
           child: Padding(
@@ -137,8 +202,8 @@ class _HomeBodyState extends State<_HomeBody> {
       },
       separatorBuilder: (context, index) {
         return SizedBox(
-          height: 30,
-          child: Divider()
+            height: 30,
+            child: Divider()
         );
       },
     );
