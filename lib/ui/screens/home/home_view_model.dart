@@ -91,4 +91,13 @@ class HomeViewModel extends ViewModel<HomeStatus> {
     }
   }
 
+  void deletePost(PostModel post, int index) {
+    List<PostModel> posts = status.posts;
+    posts.removeAt(index);
+    status = status.copyWith(
+      posts: posts,
+    );
+    _database.deletePost(post.id);
+  }
+
 }

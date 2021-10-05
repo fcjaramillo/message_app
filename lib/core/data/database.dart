@@ -24,7 +24,6 @@ class Database {
 
   Future<List<PostDb>> getPosts() async {
     var box = await Hive.openBox('post');
-    //list<RequestDb> lm = RequestDb();
     PostDb postDb = PostDb();
     List<PostDb> lm = [];
     for (int i = 0; i < box.length; i++) {
@@ -32,6 +31,17 @@ class Database {
       lm.add(postDb);
     }
     return lm;
+  }
+
+  Future deletePost(int id) async {
+    var box = await Hive.openBox('post');
+    PostDb postDb = PostDb();
+    for (int i = 0; i < box.length; i++) {
+      postDb = box.getAt(i);
+      if(postDb.id == id){
+        box.deleteAt(i);
+      }
+    }
   }
 
   Future deleteAllPost() async {
@@ -44,7 +54,16 @@ class Database {
   //Read
   Future changePostRead(int id) async {
     var box = await Hive.openBox('read');
-    await box.add(id);
+    int postId = 0;
+    bool result = true;
+    for (int i = 0; i < box.length; i++) {
+      postId = box.getAt(i);
+      if(postId == id){
+        result = false;
+      }
+    }
+    if(result)
+      await box.add(id);
   }
 
   Future<bool> getPostRead(int id) async {
@@ -63,7 +82,16 @@ class Database {
   //favorite
   Future changePostFavorite(int id) async {
     var box = await Hive.openBox('read');
-    await box.add(id);
+    int postId = 0;
+    bool result = true;
+    for (int i = 0; i < box.length; i++) {
+      postId = box.getAt(i);
+      if(postId == id){
+        result = false;
+      }
+    }
+    if(result)
+      await box.add(id);
   }
 
   Future<bool> getPostFavorite(int id) async {
