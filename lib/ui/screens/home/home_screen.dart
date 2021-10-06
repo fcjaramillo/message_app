@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:messages_app/core/api/model/post_model.dart';
+import 'package:messages_app/core/api/repository/interactor/api_interactor.dart';
 import 'package:messages_app/core/commons/constants.dart';
 import 'package:messages_app/app_theme.dart';
 import 'package:messages_app/core/configure/get_it_locator.dart';
@@ -19,6 +20,7 @@ class HomeScreen extends StatelessWidget {
       create: (_) => HomeViewModel(
         locator<MessageRoute>(),
         locator<Database>(),
+        locator<ApiInteractor>(),
       ),
       builder: (context, _){
         return HomeWidget();

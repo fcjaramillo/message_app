@@ -14,8 +14,9 @@ class HomeViewModel extends ViewModel<HomeStatus> {
 
   final MessageRoute _route;
   final Database _database;
+  final ApiInteractor _apiInteractor;
 
-  HomeViewModel(this._route, this._database){
+  HomeViewModel(this._route, this._database, this._apiInteractor){
     status = HomeStatus(
       isLoading: true,
       indexTab: 0,
@@ -27,7 +28,7 @@ class HomeViewModel extends ViewModel<HomeStatus> {
   void onInit() async {
     final connectivity = await (Connectivity().checkConnectivity());
     if (connectivity == ConnectivityResult.mobile || connectivity == ConnectivityResult.wifi) {
-      List<PostModel> response = await locator<ApiInteractor>().getAllPosts();
+      List<PostModel> response = await _apiInteractor.getAllPosts();
       response.removeRange(20, response.length);
       response.asMap().forEach((i, post) async {
         _database.setPost(PostDb(
@@ -66,8 +67,8 @@ class HomeViewModel extends ViewModel<HomeStatus> {
   void onTapPost(PostModel post, int index) async {
     final connectivity = await (Connectivity().checkConnectivity());
     if (connectivity == ConnectivityResult.mobile || connectivity == ConnectivityResult.wifi) {
-      List<CommentModel> comments = await locator<ApiInteractor>().getAllCommentsByPost(post.id);
-      UserModel user = await locator<ApiInteractor>().getUser(post.id);
+      List<CommentModel> comments = await _apiInteractor.getAllCommentsByPost(post.id);
+      UserModel user = await _apiInteractor.getUser(post.id);
       await _database.changePostRead(post.id);
       bool isFavorite = await _route.goDetail(comments: comments, post: post, user: user);
       post = post.rebuild((p) => p
