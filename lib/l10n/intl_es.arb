@@ -1,0 +1,21 @@
+{
+  "@_HOME": {
+  },
+  "sHomeAll": "TODO",
+  "sHomeFavorite": "FAVORITOS",
+  "sHomeDelete": "Borrar Todos",
+
+  "@_DETAIL": {
+  },
+  "sDetailDescription": "Descripción:",
+  "sDetailUser": "Usuario:",
+  "sDetailName": "Nombre:",
+  "sDetailEmail": "Correo:",
+  "sDetailPhone": "Celular:",
+  "sDetailWebsite": "Página web:",
+  "sDetailComments": "COMENTARIOS",
+
+  "@_SPLASH": {
+  },
+  "sSplashLoading": "Cargando..."
+}

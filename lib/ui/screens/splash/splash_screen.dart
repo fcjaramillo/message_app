@@ -3,6 +3,7 @@ import 'package:messages_app/core/commons/constants.dart';
 import 'package:messages_app/app_theme.dart';
 import 'package:messages_app/core/configure/get_it_locator.dart';
 import 'package:messages_app/core/configure/message_route.dart';
+import 'package:messages_app/generated/l10n.dart';
 import 'package:messages_app/ui/screens/splash/splash_view_model.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -49,7 +50,7 @@ class _SplashScreenState extends State<SplashScreen> {
                   height: 10,
                 ),
                 Text(
-                  'Cargando...',
+                  I18n.of(context).sSplashLoading,
                   style: textTheme.textButtomWhite,
                 ),
               ],

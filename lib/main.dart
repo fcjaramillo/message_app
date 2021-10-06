@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:messages_app/app_theme.dart';
 import 'package:messages_app/core/configure/get_it_locator.dart';
 import 'package:messages_app/core/configure/message_route.dart';
 import 'package:messages_app/core/data/database.dart';
+import 'package:messages_app/generated/l10n.dart';
 
 void main() async {
   setUpLocator();
@@ -34,7 +36,14 @@ class _MyAppState extends State<MyApp> {
       debugShowCheckedModeBanner: false,
       title: 'Message App',
       theme: AppTheme.build(),
+      localizationsDelegates: [
+        I18n.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
       onGenerateRoute: locator<MessageRoute>().onInit,
+      supportedLocales: I18n.delegate.supportedLocales,
     );
   }
 }

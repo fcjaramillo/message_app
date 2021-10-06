@@ -7,6 +7,7 @@ import 'package:messages_app/app_theme.dart';
 import 'package:messages_app/core/configure/get_it_locator.dart';
 import 'package:messages_app/core/configure/message_route.dart';
 import 'package:messages_app/core/data/database.dart';
+import 'package:messages_app/generated/l10n.dart';
 import 'package:messages_app/ui/screens/home/home_view_model.dart';
 import 'package:provider/provider.dart';
 
@@ -71,7 +72,7 @@ class HomeWidget extends StatelessWidget {
           onPressed: viewModel.onTapDeleteAll,
         ),
         replacement: ElevatedButton(
-          child: Text('Delete All'),
+          child: Text(I18n.of(context).sHomeDelete),
           onPressed: viewModel.onTapDeleteAll,
           style: ElevatedButton.styleFrom(
             primary: kColorRed,
@@ -137,12 +138,12 @@ class _HomeBodyState extends State<_HomeBody> with SingleTickerProviderStateMixi
                 tabs: [
                   Tab(
                     child: Text(
-                      'ALL',
+                      I18n.of(context).sHomeAll,
                     ),
                   ),
                   Tab(
                     child: Text(
-                      'FAVORITES',
+                      I18n.of(context).sHomeFavorite,
                     ),
                   ),
                 ],

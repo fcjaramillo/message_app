@@ -7,6 +7,7 @@ import 'package:messages_app/app_theme.dart';
 import 'package:messages_app/core/configure/get_it_locator.dart';
 import 'package:messages_app/core/configure/message_route.dart';
 import 'package:messages_app/core/data/database.dart';
+import 'package:messages_app/generated/l10n.dart';
 import 'package:messages_app/ui/screens/detail_post/detail_post_view_model.dart';
 import 'package:provider/provider.dart';
 
@@ -114,7 +115,7 @@ class _DetailPostBody extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Descripcion:',
+            I18n.of(context).sDetailDescription,
             style: textTheme.titleBlack,
           ),
           Text(
@@ -125,23 +126,23 @@ class _DetailPostBody extends StatelessWidget {
             height: 20,
           ),
           Text(
-            'User:',
+            I18n.of(context).sDetailUser,
             style: textTheme.titleBlack,
           ),
           Text(
-            'Name: ${viewModel.status.user.name}',
+            '${I18n.of(context).sDetailName} ${viewModel.status.user.name}',
             style: textTheme.subtitleBlack,
           ),
           Text(
-            'Email: ${viewModel.status.user.email}',
+            '${I18n.of(context).sDetailEmail} ${viewModel.status.user.email}',
             style: textTheme.subtitleBlack,
           ),
           Text(
-            'Phone: ${viewModel.status.user.phone}',
+            '${I18n.of(context).sDetailPhone} ${viewModel.status.user.phone}',
             style: textTheme.subtitleBlack,
           ),
           Text(
-            'Website: ${viewModel.status.user.website}',
+            '${I18n.of(context).sDetailWebsite} ${viewModel.status.user.website}',
             style: textTheme.subtitleBlack,
           ),
           SizedBox(
@@ -150,7 +151,7 @@ class _DetailPostBody extends StatelessWidget {
           Container(
             color: kColorGrayChip,
             child: Text(
-              'COMMENTS',
+              I18n.of(context).sDetailComments,
               style: textTheme.titleBlack,
             ),
             width: double.infinity,
@@ -179,10 +180,6 @@ class _DetailPostBody extends StatelessWidget {
               separatorBuilder: (BuildContext context, int index) => const Divider(),
             ),
           )
-          /*Container(
-            height: MediaQuery.of(context).size.height * 0.2,
-            child:
-          )*/
         ],
       ),
     );
