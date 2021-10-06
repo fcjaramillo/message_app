@@ -52,30 +52,46 @@ class DetailPostWidget extends StatelessWidget {
 
     final viewModel = context.watch<DetailPostViewModel>();
 
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: kColorGreen,
-        title: Text(
-          viewModel.status.titleBar,
-          style: textTheme.titleWhite.copyWith(
-            fontSize: 24,
-          ),
-        ),
-        actions: [
-          Padding(
-            padding: const EdgeInsets.only(right: 8),
-            child: IconButton(
-              icon: Icon(
-                Icons.star,
-              ),
-              onPressed: (){
-                viewModel.onTapFavorite(viewModel.status.post);
-              },
+    Future<bool> _onBackPressed() async {
+      if (Navigator.of(context).userGestureInProgress)
+        return false;
+      else{
+        await viewModel.onTapBack();
+        return true;
+      }
+    }
+
+    return WillPopScope(
+      onWillPop: _onBackPressed,
+      child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: kColorGreen,
+          title: Text(
+            viewModel.status.titleBar,
+            style: textTheme.titleWhite.copyWith(
+              fontSize: 24,
             ),
           ),
-        ]
+          actions: [
+            Padding(
+              padding: const EdgeInsets.only(right: 8),
+              child: IconButton(
+                icon: Icon(
+                  viewModel.status.post.isFavorite ?? false ?
+                    Icons.star : Icons.star_border,
+                  color: viewModel.status.post.isFavorite ?? false ?
+                    kColorYellow : kColorWhite,
+                  size: 30,
+                ),
+                onPressed: (){
+                  viewModel.onTapFavorite(viewModel.status.post);
+                },
+              ),
+            ),
+          ]
+        ),
+        body: _DetailPostBody(),
       ),
-      body: _DetailPostBody(),
     );
   }
 }

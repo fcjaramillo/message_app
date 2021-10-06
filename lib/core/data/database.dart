@@ -81,13 +81,14 @@ class Database {
 
   //favorite
   Future changePostFavorite(int id) async {
-    var box = await Hive.openBox('read');
+    var box = await Hive.openBox('favorite');
     int postId = 0;
     bool result = true;
     for (int i = 0; i < box.length; i++) {
       postId = box.getAt(i);
       if(postId == id){
         result = false;
+        box.deleteAt(i);
       }
     }
     if(result)
@@ -95,7 +96,7 @@ class Database {
   }
 
   Future<bool> getPostFavorite(int id) async {
-    var box = await Hive.openBox('read');
+    var box = await Hive.openBox('favorite');
     int postId = 0;
     bool result = false;
     for (int i = 0; i < box.length; i++) {

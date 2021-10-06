@@ -42,7 +42,8 @@ class HomeViewModel extends ViewModel<HomeStatus> {
         bool isRead = await _database.getPostRead(post.id);
         bool isFavorite = await _database.getPostFavorite(post.id);
         response[i] = post.rebuild((p) => p
-          ..isRead = isRead,
+          ..isRead = isRead
+          ..isFavorite = isFavorite,
         );
       }
       status = status.copyWith(posts:  response, isLoading: false);
@@ -68,15 +69,16 @@ class HomeViewModel extends ViewModel<HomeStatus> {
       List<CommentModel> comments = await locator<ApiInteractor>().getAllCommentsByPost(post.id);
       UserModel user = await locator<ApiInteractor>().getUser(post.id);
       await _database.changePostRead(post.id);
+      bool isFavorite = await _route.goDetail(comments: comments, post: post, user: user);
       post = post.rebuild((p) => p
-        ..isRead = true,
+        ..isRead = true
+        ..isFavorite = isFavorite,
       );
       List<PostModel> posts = status.posts;
       posts[index] = post;
       status = status.copyWith(
         posts: posts,
       );
-      _route.goDetail(comments: comments, post: post, user: user);
     }
   }
 

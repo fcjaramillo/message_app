@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:messages_app/core/api/model/post_model.dart';
 import 'package:messages_app/core/commons/constants.dart';
 import 'package:messages_app/app_theme.dart';
 import 'package:messages_app/core/configure/get_it_locator.dart';
@@ -134,9 +135,16 @@ class _HomeBodyState extends State<_HomeBody> with SingleTickerProviderStateMixi
               child: TabBarView(
                 controller: tabController,
                 children: [
-                  _ListPosts(viewModel: viewModel, textTheme: textTheme),
-                  Container(
-                    color: kColorGray,
+                  _ListPosts(
+                    viewModel: viewModel,
+                    posts: viewModel.status.posts,
+                    textTheme: textTheme,
+                  ),
+                  _ListPosts(
+                    viewModel: viewModel,
+                    posts: viewModel.status.posts.where(
+                      (post) => post.isFavorite == true).toList(),
+                    textTheme: textTheme,
                   ),
                 ],
               )
@@ -152,20 +160,22 @@ class _ListPosts extends StatelessWidget {
     Key? key,
     required this.viewModel,
     required this.textTheme,
+    required this.posts
   }) : super(key: key);
 
   final HomeViewModel viewModel;
   final TextTheme textTheme;
+  final List<PostModel> posts;
 
   @override
   Widget build(BuildContext context) {
     return ListView.separated(
-    itemCount: viewModel.status.posts.length,
+    itemCount: posts.length,
       itemBuilder: (context, index) {
         return Dismissible(
-          key: Key(viewModel.status.posts[index].id.toString()),
+          key: Key(posts[index].id.toString()),
           onDismissed: (direction){
-            viewModel.deletePost(viewModel.status.posts[index], index);
+            viewModel.deletePost(posts[index], index);
           },
           child: GestureDetector(
             child: Padding(
@@ -183,32 +193,32 @@ class _ListPosts extends StatelessWidget {
                       ),
                       flex: 1,
                     ),
-                    visible: !(viewModel.status.posts[index].isRead ?? false),
+                    visible: !(posts[index].isRead ?? false),
                   ),
                   Expanded(
                     child: Text(
-                      viewModel.status.posts[index].title,
+                      posts[index].title,
                       maxLines: 2,
                       style: textTheme.subtitleBlack,
                     ),
                     flex: 9,
                   ),
-                  Visibility(
-                    child: Expanded(
+                  Expanded(
+                    child: Visibility(
                       child: Icon(
                         Icons.star,
                         color: kColorYellow,
-                        size: 24,
+                        size: 30,
                       ),
-                      flex: 1,
+                      visible: posts[index].isFavorite ?? false,
                     ),
-                    visible: viewModel.status.posts[index].isFavorite ?? false,
+                    flex: 1,
                   ),
                 ],
               ),
             ),
             onTap: (){
-              viewModel.onTapPost(viewModel.status.posts[index], index);
+              viewModel.onTapPost(posts[index], index);
             },
           ),
         );

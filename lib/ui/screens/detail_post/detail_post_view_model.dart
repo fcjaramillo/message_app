@@ -30,4 +30,8 @@ class DetailPostViewModel extends ViewModel<DetailPostStatus> {
     );
     status = status.copyWith(post: post);
   }
+
+  onTapBack() {
+    _route.pop(status.post.isFavorite);
+  }
 }
