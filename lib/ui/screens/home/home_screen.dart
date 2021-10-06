@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:messages_app/core/api/model/post_model.dart';
 import 'package:messages_app/core/commons/constants.dart';
@@ -58,12 +60,28 @@ class HomeWidget extends StatelessWidget {
         elevation: 0,
       ),
       body: _HomeBody(),
-      floatingActionButton: FloatingActionButton(
-        child: Icon(
-          Icons.delete
+      floatingActionButtonLocation: Platform.isAndroid ? null
+          : FloatingActionButtonLocation.centerDocked,
+      floatingActionButton: Visibility(
+        child: FloatingActionButton(
+          child: Icon(
+            Icons.delete
+          ),
+          backgroundColor: kColorRed,
+          onPressed: viewModel.onTapDeleteAll,
         ),
-        backgroundColor: kColorRed,
-        onPressed: viewModel.onTapDeleteAll,
+        replacement: ElevatedButton(
+          child: Text('Delete All'),
+          onPressed: viewModel.onTapDeleteAll,
+          style: ElevatedButton.styleFrom(
+            primary: kColorRed,
+            fixedSize: Size(
+              MediaQuery.of(context).size.width,
+              50,
+            ),
+          ),
+        ),
+        visible: Platform.isAndroid,
       ),
     );
   }
@@ -185,15 +203,20 @@ class _ListPosts extends StatelessWidget {
               child: Row(
                 children: [
                   Visibility(
-                    child: Expanded(
-                      child: Icon(
-                        Icons.circle,
-                        color: kColorBlue,
-                        size: 14,
+                    child: Visibility(
+                      child: Expanded(
+                        child: _IconRead(),
+                        flex: 1,
                       ),
+                      visible: !(posts[index].isRead ?? false),
+                    ),
+                    replacement: Expanded(
+                      child: !(posts[index].isRead ?? false) ? _IconRead()
+                        : (posts[index].isFavorite ?? false) ? _IconFavorite()
+                        : SizedBox(),
                       flex: 1,
                     ),
-                    visible: !(posts[index].isRead ?? false),
+                    visible: Platform.isAndroid,
                   ),
                   Expanded(
                     child: Text(
@@ -205,12 +228,16 @@ class _ListPosts extends StatelessWidget {
                   ),
                   Expanded(
                     child: Visibility(
-                      child: Icon(
-                        Icons.star,
-                        color: kColorYellow,
+                      child: Visibility(
+                        child: _IconFavorite(),
+                        visible: posts[index].isFavorite ?? false,
+                      ),
+                      replacement: Icon(
+                        Icons.chevron_right,
+                        color: kColorGray,
                         size: 30,
                       ),
-                      visible: posts[index].isFavorite ?? false,
+                      visible: Platform.isAndroid,
                     ),
                     flex: 1,
                   ),
@@ -229,6 +256,36 @@ class _ListPosts extends StatelessWidget {
             child: Divider()
         );
       },
+    );
+  }
+}
+
+class _IconFavorite extends StatelessWidget {
+  const _IconFavorite({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Icon(
+      Icons.star,
+      color: kColorYellow,
+      size: 30,
+    );
+  }
+}
+
+class _IconRead extends StatelessWidget {
+  const _IconRead({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Icon(
+      Icons.circle,
+      color: kColorBlue,
+      size: 14,
     );
   }
 }
